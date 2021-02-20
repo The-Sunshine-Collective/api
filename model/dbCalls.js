@@ -1,14 +1,25 @@
-const sqlite3 = require('sqlite3').verbose()
-const db = new sqlite3.Database('sunshine.db')
+// const sqlite3 = require('sqlite3').verbose()
+// const db = new sqlite3.Database('sunshine.db')
+const sqlite3 = require('sqlite3')
+const { open } = require('sqlite')
+sqlite3.verbose()
 
-async function SELECT(sql) {
+
+async function openDB(filename) {
+  return open({
+    filename,
+    driver: sqlite3.Database
+  })
+}
+
+
+async function SELECT(sql, callback) {
   let results
   db.serialize(() => {
     db.each(sql, async (err, row) => {
       results = await row
-      showData(results)
+      callback(results)
     })
-
   })
   db.close()
 }
@@ -25,4 +36,10 @@ async function test() {
   console.log(output)
 }
 
-test()
+// test()
+
+module.exports = {
+  openDB,
+  SELECT
+}
+
