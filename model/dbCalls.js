@@ -10,7 +10,7 @@ async function openDB(filename) {
 }
 
 async function SELECT(sql) {
-  const db = await openDB('./sunshine.db')
+  const db = await openDB('model/sunshine.db')
   const result = await db.all(sql)
   return result
 }
@@ -20,7 +20,7 @@ async function test() {
   console.log(output)
 }
 
-test()
+// test()
 
 module.exports = {
   SELECT
